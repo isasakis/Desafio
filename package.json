@@ -25,5 +25,9 @@
   "devDependencies": {
     "concurrently": "^4.1.2",
     "nodemon": "^1.19.3"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/isasakis/Desafio/issues"
+  },
+  "homepage": "https://github.com/isasakis/Desafio#readme"
 }
