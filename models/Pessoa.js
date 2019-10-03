@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const ProfileSchema = new mongoose.Schema({
+const PessoaSchema = new mongoose.Schema({
     nome: {
         type: String,
         required: true
@@ -26,7 +26,7 @@ const ProfileSchema = new mongoose.Schema({
             type: String,
             required: true
         },
-        CEP: {
+        cep: {
             type: String,
             required: true
         },
