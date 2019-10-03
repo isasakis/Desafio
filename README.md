@@ -2,14 +2,14 @@
 
 Como executar: 
 ```bash
-//Instalar dependências servidor
+# Instalar dependências servidor
 npm install 
 
-//Instalar dependências cliente
+# Instalar dependências cliente
 cd client
 npm install
 
-//Executar cliente e servidor concorrentemente
+# Executar cliente e servidor concorrentemente
 cd ..
 npm run dev
 ```
