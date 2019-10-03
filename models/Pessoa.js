@@ -48,4 +48,4 @@ const PessoaSchema = new mongoose.Schema({
     }
 });
 
-module.exports = Pessoa = mongoose.model('pessoa', PessoaSchema);
+module.exports = Pessoa = mongoose.model('pessoas', PessoaSchema);

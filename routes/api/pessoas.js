@@ -29,6 +29,7 @@ router.post('/', [
     check('estado', 'O campo estado é obrigatório').not().isEmpty(),
     check('pais', 'O campo país é obrigatório').not().isEmpty(),
     check('cep', 'O campo CEP é obrigatório').not().isEmpty(),
+    check('bairro', 'O campo bairro é obrigatório').not().isEmpty(),
     check('rua', 'O campo rua é obrigatório').not().isEmpty(),
     check('numero', 'O campo numero é obrigatório').not().isEmpty()
   ], async (req, res) => {
@@ -39,7 +40,7 @@ router.post('/', [
   
     try {
         const camposPessoa = {};
-        const { nome, cpf, email, cidade, estado, pais, cep, rua, numero, complemento } = req.body;
+        const { nome, cpf, email, cidade, estado, pais, cep, bairro, rua, numero, complemento } = req.body;
     
         camposPessoa.nome = nome;
         camposPessoa.cpf = cpf;
@@ -49,6 +50,7 @@ router.post('/', [
         camposPessoa.endereco.estado = estado;
         camposPessoa.endereco.pais = pais;
         camposPessoa.endereco.cep = cep;
+        camposPessoa.endereco.bairro = bairro;
         camposPessoa.endereco.rua = rua;
         camposPessoa.endereco.numero = numero;
         if(complemento) camposPessoa.endereco.complemento = complemento;
