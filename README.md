@@ -1,13 +1,15 @@
 # Desafio
 
 Como executar: 
-//Instalar dependências do servidor
+```bash
+//Instalar dependências servidor
 npm install 
 
-//Instalar dependências do cliente
+//Instalar dependências cliente
 cd client
 npm install
 
 //Executar cliente e servidor concorrentemente
 cd ..
 npm run dev
+```
