@@ -28,6 +28,7 @@ router.post('/', [
   check('cidade', 'O campo cidade é obrigatório').not().isEmpty(),
   check('estado', 'O campo estado é obrigatório').not().isEmpty(),
   check('pais', 'O campo país é obrigatório').not().isEmpty(),
+  check('uf', 'O campo UF deve ter dois caracteres').not().isLength( { min: 1, max: 1 }),
   check('cep', 'O campo CEP é obrigatório').not().isEmpty(),
   check('bairro', 'O campo bairro é obrigatório').not().isEmpty(),
   check('logradouro', 'O campo logradouro é obrigatório').not().isEmpty(),
@@ -39,7 +40,7 @@ router.post('/', [
   }
 
   const camposPessoa = {};
-  const { nome, cpf, email, cidade, estado, pais, cep, bairro, logradouro, numero, complemento } = req.body;
+  const { nome, cpf, email, cidade, estado, pais, uf, cep, bairro, logradouro, numero, complemento } = req.body;
 
   camposPessoa.nome = nome;
   camposPessoa.cpf = cpf;
@@ -48,6 +49,7 @@ router.post('/', [
   camposPessoa.endereco.cidade = cidade;
   camposPessoa.endereco.estado = estado;
   camposPessoa.endereco.pais = pais;
+  camposPessoa.endereco.uf = uf;
   camposPessoa.endereco.cep = cep;
   camposPessoa.endereco.bairro = bairro;
   camposPessoa.endereco.logradouro = logradouro;

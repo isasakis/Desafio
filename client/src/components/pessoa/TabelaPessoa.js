@@ -76,6 +76,7 @@ const TabelaPessoa = ({
               <TableCell key="nome">Nome</TableCell>
               <TableCell key="cpf">CPF</TableCell>
               <TableCell key="email">E-mail</TableCell>
+              <TableCell key="endereço">Endereço</TableCell>
               <TableCell key="actions">Ações</TableCell>
             </TableRow>
           </TableHead>
@@ -86,9 +87,11 @@ const TabelaPessoa = ({
                   <TableCell component="th" scope="row">{row.nome}</TableCell>
                 <TableCell>{row.cpf}</TableCell>
                 <TableCell>{row.email}</TableCell>
+                  <TableCell>{row.endereco.logradouro}, nº {row.endereco.numero} {row.endereco.complemento && row.endereco.complemento}
+                  , {row.endereco.cidade}/{row.endereco.uf} - {row.endereco.pais}</TableCell>
                 <TableCell>
                   <Tooltip title="Editar">
-                    <IconButton aria-label="edit" className={classes.editButton}>
+                    <IconButton aria-label="edit" href={`/edit/${row._id}`} className={classes.editButton}>
                       <EditIcon />
                     </IconButton>
                   </Tooltip>

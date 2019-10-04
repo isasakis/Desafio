@@ -27,6 +27,10 @@ const PessoaSchema = new mongoose.Schema({
             type: String,
             required: true
         },
+        uf: {
+            type: String,
+            required: true
+        },
         cep: {
             type: String,
             required: true

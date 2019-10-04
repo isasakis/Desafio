@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { Fragment, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import { createPessoa } from '../../actions/pessoa';
+import { getPessoa } from '../../actions/pessoa';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,7 +31,32 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CreatePessoa = ({ createPessoa }) => {
+const CreatePessoa = ({ 
+  createPessoa,
+  getPessoa,
+  pessoa: { pessoa, loading },
+  match
+ }) => {
+  useEffect(() => {
+    getPessoa(match.params.id);
+  }, [getPessoa, match.params.id]);
+
+  useEffect(() => {
+    setFormData({
+      nome: loading || !pessoa.nome ? '' : pessoa.nome,
+      cpf: loading || !pessoa.cpf ? '' : pessoa.cpf,
+      email: loading || !pessoa.email ? '' : pessoa.email,
+      cidade: loading || !pessoa.endereco.cidade ? '' : pessoa.endereco.cidade,
+      estado: loading || !pessoa.endereco.estado ? '' : pessoa.endereco.estado,
+      pais: loading || !pessoa.endereco.pais ? '' : pessoa.endereco.pais,
+      uf: loading || !pessoa.endereco.uf ? '' : pessoa.endereco.uf,
+      logradouro: loading || !pessoa.endereco.logradouro ? '' : pessoa.endereco.logradouro,
+      numero: loading || !pessoa.endereco.numero ? '' : pessoa.endereco.numero,
+      bairro: loading || !pessoa.endereco.bairro ? '' : pessoa.endereco.bairro,
+      cep: loading || !pessoa.endereco.cep ? '' : pessoa.endereco.cep,
+      complemento: loading || !pessoa.endereco.complemento ? '' : pessoa.endereco.complemento
+    });
+  }, [loading, pessoa]);
 
   const classes = useStyles();
 
@@ -54,16 +82,21 @@ const CreatePessoa = ({ createPessoa }) => {
 
   const onSubmit = async e => {
     e.preventDefault();
-    createPessoa(formData);
+    createPessoa(formData, true);
   };
 
-  return (
+  return loading && pessoa === null ? (
+    <Fragment>
+      <p>Aguarde enquanto os dados da pessoa estão sendo carregados</p>
+      <LinearProgress />
+    </Fragment>
+  ) : (
     <div className={classes.root}>
 
       <Card>
         <CardContent>
           <Grid container alignItems="center" justify="center">
-            <h2>Cadastrar pessoa</h2>
+            <h2>Editar cadastro de pessoa</h2>
           </Grid>
           <form className={classes.container} onSubmit={e => onSubmit(e)}>
             <Grid container spacing={2}>
@@ -268,8 +301,16 @@ const CreatePessoa = ({ createPessoa }) => {
   );
 };
 
-export default connect(
-  null,
-  { createPessoa }
-)(CreatePessoa);
+CreatePessoa.propTypes = {
+  getPesosa: PropTypes.func.isRequired,
+  pessoa: PropTypes.object.isRequired,
+};
 
+const mapStateToProps = state => ({
+  pessoa: state.pessoa,
+});
+
+export default connect(
+  mapStateToProps,
+  { createPessoa, getPessoa }
+)(CreatePessoa);

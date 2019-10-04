@@ -41,6 +41,23 @@ export const createPessoa = (
   }
 };
 
+// Get pessoa by ID
+export const getPessoa = id => async dispatch => {
+  try {
+    const res = await axios.get(`/api/pessoas/${id}`);
+
+    dispatch({
+      type: GET_PESSOA,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: PESSOA_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
 // Delete pessoa
 export const deletePessoa = id => async dispatch => {
   try {

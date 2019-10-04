@@ -3,8 +3,8 @@ import axios from 'axios';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import TabelaPessoa from './TabelaPessoa';
 import Grid from '@material-ui/core/Grid';
-import CreatePessoa from './Create';
 import socket from 'socket.io-client';
+import FloatingButton from '../layout/FloatingButton';
 
 class Pessoas extends Component {
   constructor(props) {
@@ -55,7 +55,7 @@ class Pessoas extends Component {
   render() {
     return (
       <Fragment>
-        <Grid container direction="column" justify="center" alignItems="center" spacing={2}>
+        
           <Grid item xs={12}>
             <h1>Gerenciamento de cadastros de pessoas</h1>
           </Grid>
@@ -75,10 +75,7 @@ class Pessoas extends Component {
                     </Fragment>
                   )
               )}
-          </Grid>
-          <Grid item xs={12}>
-            <CreatePessoa />
-          </Grid>
+            <FloatingButton />
         </Grid>
       </Fragment>
     )
