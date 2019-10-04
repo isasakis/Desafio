@@ -41,12 +41,12 @@ const CreatePessoa = ({ createPessoa }) => {
     pais: '',
     cep: '',
     bairro: '',
-    rua: '',
+    logradouro: '',
     numero: '',
     complemento: ''
   });
 
-  const { nome, cpf, email, cidade, estado, pais, cep, bairro, rua, numero, complemento } = formData;
+  const { nome, cpf, email, cidade, estado, pais, cep, bairro, logradouro, numero, complemento } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -62,12 +62,12 @@ const CreatePessoa = ({ createPessoa }) => {
       <Card>
         <CardContent>
           <Grid container alignItems="center" justify="center">
-            <h1>Cadastrar pessoa</h1>
+            <h2>Cadastrar pessoa</h2>
           </Grid>
           <form className={classes.container} onSubmit={e => onSubmit(e)}>
             <Grid container spacing={2}>
             <Grid item xs={12}>
-            <h2>Informações pessoais</h2>
+            <h3>Informações pessoais</h3>
             </Grid>
               <Grid item xs={6}>
                 <TextField
@@ -110,7 +110,7 @@ const CreatePessoa = ({ createPessoa }) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <h2>Endereço</h2>
+                <h3>Endereço</h3>
                 </Grid>
                 <Grid item xs={6}>
                 <TextField
@@ -178,16 +178,16 @@ const CreatePessoa = ({ createPessoa }) => {
                   helperText="Insira o bairro."
                 />
               <TextField
-                  id="rua"
-                  label="Rua"
+                  id="logradouro"
+                  label="Logradouro"
                   className={useStyles.textField}
-                  name="rua"
-                  value={rua}
+                  name="logradouro"
+                  value={logradouro}
                   onChange={e => onChange(e)}
                   margin="normal"
                   variant="filled"
                   fullWidth
-                  helperText="Insira a sua rua."
+                  helperText="Insira o logradouro."
                 />
                 <TextField
                   id="numero"

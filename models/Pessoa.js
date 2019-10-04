@@ -2,35 +2,46 @@ const mongoose = require('mongoose');
 
 const PessoaSchema = new mongoose.Schema({
     nome: {
-        type: String
+        type: String,
+        required: true
     },
     cpf: {
-        type: String
+        type: String,
+        required: true,
+        unique: true
     },
     email: {
-        type: String
+        type: String,
+        required: true
     },
     endereco: {
         cidade: {
-            type: String
+            type: String,
+            required: true
         },
         estado: {
-            type: String
+            type: String,
+            required: true
         },
         pais: {
-            type: String
+            type: String,
+            required: true
         },
         cep: {
-            type: String
+            type: String,
+            required: true
         },
         bairro: {
-            type: String
+            type: String,
+            required: true
         },
-        rua: {
-            type: String
+        logradouro: {
+            type: String,
+            required: true
         },
         numero: {
-            type: Number
+            type: Number,
+            required: true
         },
         complemento: {
             type: String

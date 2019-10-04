@@ -24,41 +24,53 @@ router.get('/', async (req, res) => {
 router.post('/', [
   check('nome', 'O campo nome é obrigatório').not().isEmpty(),
   check('cpf', 'O campo CPF é obrigatório').not().isEmpty(),
-  check('email', 'O campo email é obrigatório').not().isEmpty(),
+  check('email', 'Insira um endereço de e-mail válido').not().isEmpty().isEmail().normalizeEmail(),
   check('cidade', 'O campo cidade é obrigatório').not().isEmpty(),
   check('estado', 'O campo estado é obrigatório').not().isEmpty(),
   check('pais', 'O campo país é obrigatório').not().isEmpty(),
   check('cep', 'O campo CEP é obrigatório').not().isEmpty(),
   check('bairro', 'O campo bairro é obrigatório').not().isEmpty(),
-  check('rua', 'O campo rua é obrigatório').not().isEmpty(),
-  check('numero', 'O campo numero é obrigatório').not().isEmpty()
+  check('logradouro', 'O campo logradouro é obrigatório').not().isEmpty(),
+  check('numero', 'O campo número deve ser um valor numérico inteiro').not().isEmpty().isInt()
 ], async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  try {
-      const camposPessoa = {};
-      const { nome, cpf, email, cidade, estado, pais, cep, bairro, rua, numero, complemento } = req.body;
-  
-      camposPessoa.nome = nome;
-      camposPessoa.cpf = cpf;
-      camposPessoa.email = email;
-      camposPessoa.endereco = {};
-      camposPessoa.endereco.cidade = cidade;
-      camposPessoa.endereco.estado = estado;
-      camposPessoa.endereco.pais = pais;
-      camposPessoa.endereco.cep = cep;
-      camposPessoa.endereco.bairro = bairro;
-      camposPessoa.endereco.rua = rua;
-      camposPessoa.endereco.numero = numero;
-      if(complemento) camposPessoa.endereco.complemento = complemento;
+  const camposPessoa = {};
+  const { nome, cpf, email, cidade, estado, pais, cep, bairro, logradouro, numero, complemento } = req.body;
 
-      const pessoa = new Pessoa(camposPessoa);
-      await pessoa.save();
+  camposPessoa.nome = nome;
+  camposPessoa.cpf = cpf;
+  camposPessoa.email = email;
+  camposPessoa.endereco = {};
+  camposPessoa.endereco.cidade = cidade;
+  camposPessoa.endereco.estado = estado;
+  camposPessoa.endereco.pais = pais;
+  camposPessoa.endereco.cep = cep;
+  camposPessoa.endereco.bairro = bairro;
+  camposPessoa.endereco.logradouro = logradouro;
+  camposPessoa.endereco.numero = numero;
+  if(complemento) camposPessoa.endereco.complemento = complemento;
+
+  try {
+    //Se o CPF já foi cadastrado, é edição
+    let pessoa = await Pessoa.findOne({ cpf: cpf });
+
+    if (pessoa) {
+      //Update
+      pessoa = await Pessoa.findByIdAndUpdate(pessoa._id, 
+            {$set: camposPessoa}, {new: true});
 
       return res.json(pessoa);
+    }
+
+    //Se o CPF não foi cadastrado, é inserção
+    pessoa = new Pessoa(camposPessoa);
+    await pessoa.save();
+
+    return res.json(pessoa);
       
   } catch (err) {
     console.error(err.message);
@@ -88,51 +100,6 @@ router.get('/:id', async (req, res) => {
     }
   });
 
-//  @route  POST api/pessoas/:id
-//  @desc   Update pessoa
-//  @access Public
-router.post('/:id', [
-    [check('nome', 'O campo nome é obrigatório').not().isEmpty(),
-    check('cpf', 'O campo CPF é obrigatório').not().isEmpty(),
-    check('email', 'O campo email é obrigatório').not().isEmpty(),
-    check('cidade', 'O campo cidade é obrigatório').not().isEmpty(),
-    check('estado', 'O campo estado é obrigatório').not().isEmpty(),
-    check('pais', 'O campo país é obrigatório').not().isEmpty(),
-    check('cep', 'O campo CEP é obrigatório').not().isEmpty(),
-    check('rua', 'O campo rua é obrigatório').not().isEmpty(),
-    check('numero', 'O campo numero é obrigatório').not().isEmpty()]
-  ], async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-  
-    try {
-        const camposPessoa = {};
-        const { nome, cpf, email, cidade, estado, pais, cep, rua, numero, complemento } = req.body;
-    
-        camposPessoa.nome = nome;
-        camposPessoa.cpf = cpf;
-        camposPessoa.email = email;
-        camposPessoa.endereco = {};
-        camposPessoa.endereco.cidade = cidade;
-        camposPessoa.endereco.estado = estado;
-        camposPessoa.endereco.pais = pais;
-        camposPessoa.endereco.cep = cep;
-        camposPessoa.endereco.rua = rua;
-        camposPessoa.endereco.numero = numero;
-        if(complemento) camposPessoa.endereco.complemento = complemento;
-
-        let pessoa = await Pessoa.findByIdAndUpdate(req.params.id, 
-            {$set: camposPessoa}, {new: true});
-        
-        return res.json(pessoa);
-        
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
-    }
-  });
 
 // @route    DELETE api/pessoas/:id
 // @desc     Delete pessoa
