@@ -1,9 +1,9 @@
 const express = require('express');
 const connectDB = require('./config/db');
+const cors = require('cors')
 
 const app = express();
 
-/*
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
@@ -15,15 +15,23 @@ app.use((req, res, next) => {
 io.on('connection', function(socket){
   console.log('a user connected');
 });
-*/
-//Connect database
+
+//Connect Database
 connectDB();
 
-app.use(express.json({ extended: false }));
-  
+app.use(cors())
 
+//Init Middleware
+app.use(express.json({ extended: false }));
+
+app.use((req, res, next) => {
+  req.io = io
+  return next()
+})
+
+// Define routes
 app.use('/api/pessoas', require('./routes/api/pessoas'));
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+http.listen(PORT, () => console.log(`Server started on port ${PORT}`));

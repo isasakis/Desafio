@@ -63,12 +63,15 @@ router.post('/', [
       pessoa = await Pessoa.findByIdAndUpdate(pessoa._id, 
             {$set: camposPessoa}, {new: true});
 
+      req.io.emit('pessoaUpdate', pessoa);
       return res.json(pessoa);
     }
 
     //Se o CPF não foi cadastrado, é inserção
     pessoa = new Pessoa(camposPessoa);
     await pessoa.save();
+
+    req.io.emit('pessoa', pessoa);
 
     return res.json(pessoa);
       
@@ -113,6 +116,9 @@ router.delete('/:id', async (req, res) => {
       }
 
       await pessoa.remove();
+
+      const pessoas = await Pessoa.find();
+      req.io.emit('pessoas', pessoas);
   
       res.json({ msg: 'Pessoa excluída' });
     } catch (err) {
