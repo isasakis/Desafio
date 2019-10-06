@@ -3,16 +3,19 @@ import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 import { createPessoa } from '../../actions/pessoa';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Tooltip from '@material-ui/core/Tooltip';
+import DialogActions from '@material-ui/core/DialogActions';
+
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    width: '80%',
-    marginLeft: '130px',
-  },
   button: {
     marginRight: theme.spacing(1),
   },
@@ -25,12 +28,29 @@ const useStyles = makeStyles(theme => ({
   },
   input: {
     display: 'none',
-  }
+  },
+  fab: {
+    position: 'absolute',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1),
+  },
 }));
 
 const CreatePessoa = ({ createPessoa }) => {
 
   const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+
+  function handleClickOpen() {
+    setOpen(true);
+  }
+
+  function handleClose() {
+    setOpen(false);
+  }
 
   const [formData, setFormData] = useState({
     nome: '',
@@ -55,15 +75,24 @@ const CreatePessoa = ({ createPessoa }) => {
   const onSubmit = async e => {
     e.preventDefault();
     createPessoa(formData);
+    setOpen(false);
   };
 
   return (
     <div className={classes.root}>
-
-      <Card>
-        <CardContent>
+      <Tooltip title="Adicionar pessoa" aria-label="add">
+        <Fab color="primary" onClick={handleClickOpen} className={classes.fab}>
+          <AddIcon />
+        </Fab>
+      </Tooltip>
+      <Dialog maxWidth="lg" open={open}
+        onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Cadastrar pessoa </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Para cadastrar uma nova pessoa, preencha os dados abaixo.
+          </DialogContentText>
           <Grid container alignItems="center" justify="center">
-            <h2>Cadastrar pessoa</h2>
           </Grid>
           <form className={classes.container} onSubmit={e => onSubmit(e)}>
             <Grid container spacing={2}>
@@ -253,17 +282,18 @@ const CreatePessoa = ({ createPessoa }) => {
               justify="flex-end"
               alignItems="center"
             >
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                type='submit'
-              > Salvar
-                  </Button>
+              <DialogActions>
+                <Button variant="contained" onClick={handleClose} color="primary" autoFocus>
+                  Cancelar
+                        </Button>
+                <Button variant="contained" onClick={e => onSubmit(e)} color="secondary">
+                  Salvar
+                        </Button>
+              </DialogActions>
             </Grid>
           </form>
-        </CardContent>
-      </Card>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

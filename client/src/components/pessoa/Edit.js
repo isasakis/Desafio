@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
-import { createPessoa } from '../../actions/pessoa';
+import { updatePessoa } from '../../actions/pessoa';
 import { getPessoa } from '../../actions/pessoa';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
@@ -31,8 +31,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CreatePessoa = ({ 
-  createPessoa,
+const EditPessoa = ({ 
+  updatePessoa,
   getPessoa,
   pessoa: { pessoa, loading },
   match
@@ -82,7 +82,7 @@ const CreatePessoa = ({
 
   const onSubmit = async e => {
     e.preventDefault();
-    createPessoa(formData, true);
+    updatePessoa(formData, pessoa._id);
   };
 
   return loading && pessoa === null ? (
@@ -92,7 +92,6 @@ const CreatePessoa = ({
     </Fragment>
   ) : (
     <div className={classes.root}>
-
       <Card>
         <CardContent>
           <Grid container alignItems="center" justify="center">
@@ -301,8 +300,8 @@ const CreatePessoa = ({
   );
 };
 
-CreatePessoa.propTypes = {
-  getPesosa: PropTypes.func.isRequired,
+EditPessoa.propTypes = {
+  getPessoa: PropTypes.func.isRequired,
   pessoa: PropTypes.object.isRequired,
 };
 
@@ -312,5 +311,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { createPessoa, getPessoa }
-)(CreatePessoa);
+  { updatePessoa, getPessoa }
+)(EditPessoa);

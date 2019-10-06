@@ -12,9 +12,7 @@ app.use((req, res, next) => {
   return next()
 })
 
-io.on('connection', function(socket){
-  console.log('a user connected');
-});
+io.on('connection', function(socket){});
 
 //Connect Database
 connectDB();
@@ -24,10 +22,6 @@ app.use(cors())
 //Init Middleware
 app.use(express.json({ extended: false }));
 
-app.use((req, res, next) => {
-  req.io = io
-  return next()
-})
 
 // Define routes
 app.use('/api/pessoas', require('./routes/api/pessoas'));

@@ -4,7 +4,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import TabelaPessoa from './TabelaPessoa';
 import Grid from '@material-ui/core/Grid';
 import socket from 'socket.io-client';
-import FloatingButton from '../layout/FloatingButton';
+import Create from './Create';
 
 class Pessoas extends Component {
   constructor(props) {
@@ -34,7 +34,7 @@ class Pessoas extends Component {
   }
 
   subscribeToEvents = () => {
-    const io = socket('http://localhost:5000', {transports: ['websocket']});
+    const io = socket('http://localhost:5000', { transports: ['websocket'] });
 
     io.on('pessoa', data => {
       this.setState({ pessoas: [data, ...this.state.pessoas] })
@@ -50,17 +50,17 @@ class Pessoas extends Component {
       })
     })
   }
-  
+
 
   render() {
     return (
       <Fragment>
-        
+        <Grid container direction="column" justify="center" alignItems="center" spacing={2}>
           <Grid item xs={12}>
-            <h1>Gerenciamento de cadastros de pessoas</h1>
+            <h1>Gerenciamento de pessoas</h1>
           </Grid>
           <Grid item xs={12}>
-            <h2>Lista de pessoas cadastradas</h2>
+            <h2>Pessoas cadastradas</h2>
             {this.state.loading ? (
               <Fragment>
                 <p>Aguarde enquanto os cadastros de pessoas estão sendo carregados</p>
@@ -68,15 +68,16 @@ class Pessoas extends Component {
               </Fragment>
             ) :
               (this.state.pessoas && this.state.pessoas.length > 0 ? (
-                  <TabelaPessoa pessoas={this.state.pessoas} />
-                ) : (
-                    <Fragment>
-                      <p>Nenhuma pessoa cadastrada.</p>
-                    </Fragment>
-                  )
+                <TabelaPessoa pessoas={this.state.pessoas} />
+              ) : (
+                  <Fragment>
+                    <p>Nenhuma pessoa cadastrada.</p>
+                  </Fragment>
+                )
               )}
-            <FloatingButton />
+          </Grid>
         </Grid>
+        <Create />
       </Fragment>
     )
   }

@@ -9,8 +9,7 @@ import {
 
 // Create pessoa
 export const createPessoa = (
-  formData,
-  edit = false
+  formData
 ) => async dispatch => {
   try {
     const config = {
@@ -26,7 +25,7 @@ export const createPessoa = (
       payload: res.data
     });
 
-    dispatch(setAlert(edit ? 'Cadastro de pessoa atualizado com sucesso' : 'Cadastro de pessoa criado com sucesso', 'success'));
+    dispatch(setAlert('Cadastro de pessoa criado com sucesso', 'success'));
 
   } catch (err) {
     const errors = err.response.data.errors;
@@ -51,6 +50,40 @@ export const getPessoa = id => async dispatch => {
       payload: res.data
     });
   } catch (err) {
+    dispatch({
+      type: PESSOA_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Create pessoa
+export const updatePessoa = (
+  formData,
+  id
+) => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const res = await axios.post(`/api/pessoas/${id}`, formData, config);
+
+    dispatch({
+      type: GET_PESSOA,
+      payload: res.data
+    });
+
+    dispatch(setAlert('Cadastro de pessoa atualizado com sucesso', 'success'));
+
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+    }
     dispatch({
       type: PESSOA_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }

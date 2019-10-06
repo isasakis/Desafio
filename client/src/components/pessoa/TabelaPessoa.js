@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     width: '100%',
   },
   tableWrapper: {
-    maxHeight: 440,
+    maxHeight: 400,
     overflow: 'auto',
   },
   deleteButton: {
@@ -47,6 +47,7 @@ const TabelaPessoa = ({
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [open, setOpen] = React.useState(false);
+  const [idPessoa, setIdPessoa] = React.useState(0);
 
   const rows = pessoas;
 
@@ -59,12 +60,18 @@ const TabelaPessoa = ({
     setPage(0);
   };
 
-  function openDialog() {
+  function openDialog(id) {
     setOpen(true);
+    setIdPessoa(id);
   }
 
   function closeDialog() {
-      setOpen(false);
+    setOpen(false);
+  }
+
+  function onClickDelete(){
+    deletePessoa(idPessoa);
+    setOpen(false);
   }
 
   return (
@@ -85,44 +92,44 @@ const TabelaPessoa = ({
               return (
                 <TableRow hover tabIndex={-1} key={row._id}>
                   <TableCell component="th" scope="row">{row.nome}</TableCell>
-                <TableCell>{row.cpf}</TableCell>
-                <TableCell>{row.email}</TableCell>
+                  <TableCell>{row.cpf}</TableCell>
+                  <TableCell>{row.email}</TableCell>
                   <TableCell>{row.endereco.logradouro}, nº {row.endereco.numero} {row.endereco.complemento && row.endereco.complemento}
-                  , {row.endereco.cidade}/{row.endereco.uf} - {row.endereco.pais}</TableCell>
-                <TableCell>
-                  <Tooltip title="Editar">
-                    <IconButton aria-label="edit" href={`/edit/${row._id}`} className={classes.editButton}>
-                      <EditIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Excluir">
-                    <IconButton aria-label="delete" onClick={openDialog} className={classes.deleteButton}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Dialog open={open} onClose={closeDialog} aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description">
-                <DialogTitle id="alert-dialog-title">{"Excluir pessoa"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Tem certeza que deseja excluir esta pessoa?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button variant="contained" onClick={closeDialog} color="primary" autoFocus>
-                        Não, cancelar
-                    </Button>
-                    <Button variant="contained" onClick={() => deletePessoa(row._id)} color="secondary">
-                        Sim, quero excluir
-                    </Button>
-                </DialogActions>
-            </Dialog>
-                </TableCell>
+                    , {row.endereco.cidade}/{row.endereco.uf} - {row.endereco.pais}</TableCell>
+                  <TableCell>
+                    <Tooltip title="Editar">
+                      <IconButton aria-label="edit" href={`/edit/${row._id}`} className={classes.editButton}>
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Excluir">
+                      <IconButton aria-label="delete" onClick={() => openDialog(row._id)} className={classes.deleteButton}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Dialog open={open} onClose={closeDialog} aria-labelledby="alert-dialog-title"
+                      aria-describedby="alert-dialog-description">
+                      <DialogTitle id="alert-dialog-title">{"Excluir pessoa"}</DialogTitle>
+                      <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                          Tem certeza que deseja excluir esta pessoa?
+                        </DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button variant="contained" onClick={closeDialog} color="primary" autoFocus>
+                          Não, cancelar
+                        </Button>
+                        <Button variant="contained" onClick={onClickDelete} color="secondary">
+                          Sim, quero excluir
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
+                  </TableCell>
 
-               
+
                 </TableRow>
               );
-              
+
             })}
           </TableBody>
         </Table>
@@ -153,5 +160,5 @@ TabelaPessoa.propTypes = {
 };
 
 export default connect(
-  null, {deletePessoa}
+  null, { deletePessoa }
 )(TabelaPessoa);
