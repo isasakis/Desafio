@@ -4,18 +4,15 @@ import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
 import { createPessoa } from '../../actions/pessoa';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Tooltip from '@material-ui/core/Tooltip';
-import DialogActions from '@material-ui/core/DialogActions';
-
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import InputMask from 'react-input-mask';
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    width: '80%',
+  },
   button: {
     marginRight: theme.spacing(1),
   },
@@ -29,28 +26,14 @@ const useStyles = makeStyles(theme => ({
   input: {
     display: 'none',
   },
-  fab: {
-    position: 'absolute',
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
-  },
-  extendedIcon: {
-    marginRight: theme.spacing(1),
-  },
 }));
 
-const CreatePessoa = ({ createPessoa }) => {
+const CreatePessoa = ({ 
+  createPessoa,
+  history 
+  }) => {
 
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-
-  function handleClickOpen() {
-    setOpen(true);
-  }
-
-  function handleClose() {
-    setOpen(false);
-  }
 
   const [formData, setFormData] = useState({
     nome: '',
@@ -74,25 +57,15 @@ const CreatePessoa = ({ createPessoa }) => {
 
   const onSubmit = async e => {
     e.preventDefault();
-    createPessoa(formData);
-    setOpen(false);
+    createPessoa(formData, history);
   };
 
   return (
     <div className={classes.root}>
-      <Tooltip title="Adicionar pessoa" aria-label="add">
-        <Fab color="primary" onClick={handleClickOpen} className={classes.fab}>
-          <AddIcon />
-        </Fab>
-      </Tooltip>
-      <Dialog maxWidth="lg" open={open}
-        onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Cadastrar pessoa </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Para cadastrar uma nova pessoa, preencha os dados abaixo.
-          </DialogContentText>
+      <Card>
+        <CardContent>
           <Grid container alignItems="center" justify="center">
+            <h2>Cadastrar pessoa</h2>
           </Grid>
           <form className={classes.container} onSubmit={e => onSubmit(e)}>
             <Grid container spacing={2}>
@@ -103,42 +76,46 @@ const CreatePessoa = ({ createPessoa }) => {
                 <TextField
                   id="nome"
                   label="Nome"
-                  className={useStyles.textField}
                   margin="normal"
                   variant="filled"
                   name="nome"
                   value={nome}
+                  required
                   onChange={e => onChange(e)}
-                  helperText="Insira o seu nome."
+                  helperText="Insira nome."
                   fullWidth
                 />
               </Grid>
               <Grid item xs={4}>
-                <TextField
-                  id="cpf"
-                  label="CPF"
-                  className={useStyles.textField}
-                  margin="normal"
-                  variant="filled"
-                  name="cpf"
+                <InputMask
+                  mask="999.999.999-99"
                   value={cpf}
                   onChange={e => onChange(e)}
-                  fullWidth
-                  helperText="Insira o seu CPF."
-                />
+                >
+                  {() => <TextField
+                    id="cpf"
+                    label="CPF"
+                    margin="normal"
+                    variant="filled"
+                    name="cpf"
+                    required
+                    fullWidth
+                    helperText="Insira o CPF."
+                  />}
+                </InputMask>
               </Grid>
               <Grid item xs={4}>
                 <TextField
                   id="email"
                   label="E-mail"
-                  className={useStyles.textField}
                   name="email"
+                  required
                   value={email}
                   onChange={e => onChange(e)}
                   margin="normal"
                   variant="filled"
                   fullWidth
-                  helperText="Insira o seu e-mail."
+                  helperText="Insira o e-mail."
                 />
               </Grid>
               <Grid item xs={12}>
@@ -148,67 +125,72 @@ const CreatePessoa = ({ createPessoa }) => {
                 <TextField
                   id="cidade"
                   label="Cidade"
-                  className={useStyles.textField}
                   name="cidade"
+                  required
                   value={cidade}
                   onChange={e => onChange(e)}
                   margin="normal"
                   variant="filled"
                   fullWidth
-                  helperText="Insira a sua cidade."
+                  helperText="Insira a cidade."
                 />
               </Grid>
               <Grid item xs={4}>
                 <TextField
                   id="estado"
                   label="Estado"
-                  className={useStyles.textField}
                   name="estado"
+                  required
                   value={estado}
                   onChange={e => onChange(e)}
                   type="text"
                   margin="normal"
                   variant="filled"
                   fullWidth
-                  helperText="Insira o seu estado."
+                  helperText="Insira o estado."
                 />
               </Grid>
               <Grid item xs={4}>
                 <TextField
                   id="pais"
                   label="País"
-                  className={useStyles.textField}
                   name="pais"
+                  required
                   value={pais}
                   onChange={e => onChange(e)}
                   type="text"
                   margin="normal"
                   variant="filled"
                   fullWidth
-                  helperText="Insira o seu país."
+                  helperText="Insira o país."
                 />
               </Grid>
               <Grid item xs={4}>
-                <TextField
-                  id="uf"
-                  label="UF"
-                  className={useStyles.textField}
-                  name="uf"
+                <InputMask
+                  mask="aa"
+                  maskChar = {null}
                   value={uf}
                   onChange={e => onChange(e)}
-                  type="text"
-                  margin="normal"
-                  variant="filled"
-                  fullWidth
-                  helperText="Insira o UF."
-                />
+                >
+                  {() => <TextField
+                    id="uf"
+                    label="UF"
+                    name="uf"
+                    required
+                    type="text"
+                    margin="normal"
+                    variant="filled"
+                    fullWidth
+                    helperText="Insira o UF."
+                  />}
+                </InputMask>
               </Grid>
               <Grid item xs={4}>
                 <TextField
                   id="logradouro"
                   label="Logradouro"
-                  className={useStyles.textField}
                   name="logradouro"
+                  required
                   value={logradouro}
                   onChange={e => onChange(e)}
                   margin="normal"
@@ -221,8 +203,8 @@ const CreatePessoa = ({ createPessoa }) => {
                 <TextField
                   id="bairro"
                   label="Bairro"
-                  className={useStyles.textField}
                   name="bairro"
+                  required
                   value={bairro}
                   onChange={e => onChange(e)}
                   margin="normal"
@@ -235,8 +217,8 @@ const CreatePessoa = ({ createPessoa }) => {
                 <TextField
                   id="numero"
                   label="Número"
-                  className={useStyles.textField}
                   name="numero"
+                  required
                   value={numero}
                   onChange={e => onChange(e)}
                   type="text"
@@ -250,7 +232,6 @@ const CreatePessoa = ({ createPessoa }) => {
                 <TextField
                   id="complemento"
                   label="Complemento"
-                  className={useStyles.textField}
                   name="complemento"
                   value={complemento}
                   onChange={e => onChange(e)}
@@ -262,18 +243,22 @@ const CreatePessoa = ({ createPessoa }) => {
                 />
               </Grid>
               <Grid item xs={4}>
-                <TextField
-                  id="cep"
-                  label="CEP"
-                  className={useStyles.textField}
-                  name="cep"
+                <InputMask
+                  mask="99999-999"
                   value={cep}
-                  onChange={e => onChange(e)}
-                  margin="normal"
-                  variant="filled"
-                  fullWidth
-                  helperText="Insira o CEP do seu endereço."
-                />
+                    onChange={e => onChange(e)}
+                >
+                  {() => <TextField
+                    id="cep"
+                    label="CEP"
+                    required
+                    name="cep"
+                    margin="normal"
+                    variant="filled"
+                    fullWidth
+                    helperText="Insira o CEP do endereço."
+                  />}
+                </InputMask>
               </Grid>
             </Grid>
             <Grid
@@ -282,18 +267,24 @@ const CreatePessoa = ({ createPessoa }) => {
               justify="flex-end"
               alignItems="center"
             >
-              <DialogActions>
-                <Button variant="contained" onClick={handleClose} color="primary" autoFocus>
-                  Cancelar
-                        </Button>
-                <Button variant="contained" onClick={e => onSubmit(e)} color="secondary">
-                  Salvar
-                        </Button>
-              </DialogActions>
+              <Button
+                variant="contained"
+                color="default"
+                className={classes.button}
+                href='/'
+              > Voltar
+                  </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                type='submit'
+              > Salvar
+                  </Button>
             </Grid>
           </form>
-        </DialogContent>
-      </Dialog>
+        </CardContent>
+      </Card>
     </div>
   );
 };

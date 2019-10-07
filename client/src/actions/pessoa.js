@@ -9,7 +9,8 @@ import {
 
 // Create pessoa
 export const createPessoa = (
-  formData
+  formData,
+  history
 ) => async dispatch => {
   try {
     const config = {
@@ -26,6 +27,7 @@ export const createPessoa = (
     });
 
     dispatch(setAlert('Cadastro de pessoa criado com sucesso', 'success'));
+    history.push('/');
 
   } catch (err) {
     const errors = err.response.data.errors;
@@ -60,6 +62,7 @@ export const getPessoa = id => async dispatch => {
 // Create pessoa
 export const updatePessoa = (
   formData,
+  history,
   id
 ) => async dispatch => {
   try {
@@ -77,6 +80,7 @@ export const updatePessoa = (
     });
 
     dispatch(setAlert('Cadastro de pessoa atualizado com sucesso', 'success'));
+    history.push('/');
 
   } catch (err) {
     const errors = err.response.data.errors;

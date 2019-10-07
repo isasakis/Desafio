@@ -10,13 +10,19 @@ import TextField from '@material-ui/core/TextField';
 import { updatePessoa } from '../../actions/pessoa';
 import { getPessoa } from '../../actions/pessoa';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import InputMask from 'react-input-mask';
 
 const useStyles = makeStyles(theme => ({
   root: {
     width: '80%',
-    marginLeft: '130px',
   },
   button: {
+    marginRight: theme.spacing(1),
+  },
+  buttonVoltar: {
+    marginRight: theme.spacing(1),
+  },
+  buttonSalvar: {
     marginRight: theme.spacing(1),
   },
   formControl: {
@@ -31,12 +37,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const EditPessoa = ({ 
+const EditPessoa = ({
   updatePessoa,
   getPessoa,
   pessoa: { pessoa, loading },
-  match
- }) => {
+  match,
+  history
+}) => {
   useEffect(() => {
     getPessoa(match.params.id);
   }, [getPessoa, match.params.id]);
@@ -82,7 +89,7 @@ const EditPessoa = ({
 
   const onSubmit = async e => {
     e.preventDefault();
-    updatePessoa(formData, pessoa._id);
+    updatePessoa(formData, history, pessoa._id);
   };
 
   return loading && pessoa === null ? (
@@ -91,213 +98,233 @@ const EditPessoa = ({
       <LinearProgress />
     </Fragment>
   ) : (
-    <div className={classes.root}>
-      <Card>
-        <CardContent>
-          <Grid container alignItems="center" justify="center">
-            <h2>Editar cadastro de pessoa</h2>
-          </Grid>
-          <form className={classes.container} onSubmit={e => onSubmit(e)}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <h3>Informações pessoais</h3>
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  id="nome"
-                  label="Nome"
-                  className={useStyles.textField}
-                  margin="normal"
-                  variant="filled"
-                  name="nome"
-                  value={nome}
-                  onChange={e => onChange(e)}
-                  helperText="Insira o seu nome."
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  id="cpf"
-                  label="CPF"
-                  className={useStyles.textField}
-                  margin="normal"
-                  variant="filled"
-                  name="cpf"
-                  value={cpf}
-                  onChange={e => onChange(e)}
-                  fullWidth
-                  helperText="Insira o seu CPF."
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  id="email"
-                  label="E-mail"
-                  className={useStyles.textField}
-                  name="email"
-                  value={email}
-                  onChange={e => onChange(e)}
-                  margin="normal"
-                  variant="filled"
-                  fullWidth
-                  helperText="Insira o seu e-mail."
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <h3>Endereço</h3>
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  id="cidade"
-                  label="Cidade"
-                  className={useStyles.textField}
-                  name="cidade"
-                  value={cidade}
-                  onChange={e => onChange(e)}
-                  margin="normal"
-                  variant="filled"
-                  fullWidth
-                  helperText="Insira a sua cidade."
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  id="estado"
-                  label="Estado"
-                  className={useStyles.textField}
-                  name="estado"
-                  value={estado}
-                  onChange={e => onChange(e)}
-                  type="text"
-                  margin="normal"
-                  variant="filled"
-                  fullWidth
-                  helperText="Insira o seu estado."
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  id="pais"
-                  label="País"
-                  className={useStyles.textField}
-                  name="pais"
-                  value={pais}
-                  onChange={e => onChange(e)}
-                  type="text"
-                  margin="normal"
-                  variant="filled"
-                  fullWidth
-                  helperText="Insira o seu país."
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  id="uf"
-                  label="UF"
-                  className={useStyles.textField}
-                  name="uf"
-                  value={uf}
-                  onChange={e => onChange(e)}
-                  type="text"
-                  margin="normal"
-                  variant="filled"
-                  fullWidth
-                  helperText="Insira o UF."
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  id="logradouro"
-                  label="Logradouro"
-                  className={useStyles.textField}
-                  name="logradouro"
-                  value={logradouro}
-                  onChange={e => onChange(e)}
-                  margin="normal"
-                  variant="filled"
-                  fullWidth
-                  helperText="Insira o logradouro."
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  id="bairro"
-                  label="Bairro"
-                  className={useStyles.textField}
-                  name="bairro"
-                  value={bairro}
-                  onChange={e => onChange(e)}
-                  margin="normal"
-                  variant="filled"
-                  fullWidth
-                  helperText="Insira o bairro."
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  id="numero"
-                  label="Número"
-                  className={useStyles.textField}
-                  name="numero"
-                  value={numero}
-                  onChange={e => onChange(e)}
-                  type="text"
-                  margin="normal"
-                  variant="filled"
-                  fullWidth
-                  helperText="Insira o número."
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  id="complemento"
-                  label="Complemento"
-                  className={useStyles.textField}
-                  name="complemento"
-                  value={complemento}
-                  onChange={e => onChange(e)}
-                  type="text"
-                  margin="normal"
-                  variant="filled"
-                  fullWidth
-                  helperText="Insira o complemento."
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  id="cep"
-                  label="CEP"
-                  className={useStyles.textField}
-                  name="cep"
-                  value={cep}
-                  onChange={e => onChange(e)}
-                  margin="normal"
-                  variant="filled"
-                  fullWidth
-                  helperText="Insira o CEP do seu endereço."
-                />
-              </Grid>
+      <div className={classes.root}>
+        <Card>
+          <CardContent>
+            <Grid container alignItems="center" justify="center">
+              <h2>Editar cadastro de pessoa</h2>
             </Grid>
-            <Grid
-              container
-              direction="row"
-              justify="flex-end"
-              alignItems="center"
-            >
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                type='submit'
-              > Salvar
+            <form className={classes.container} onSubmit={e => onSubmit(e)}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <h3>Informações pessoais</h3>
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    id="nome"
+                    label="Nome"
+                    className={useStyles.textField}
+                    margin="normal"
+                    variant="filled"
+                    name="nome"
+                    required
+                    value={nome}
+                    onChange={e => onChange(e)}
+                    helperText="Insira o seu nome."
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <InputMask
+                    mask="999.999.999-99"
+                    value={cpf}
+                    onChange={e => onChange(e)}
+                  >
+                    {() => <TextField
+                      id="cpf"
+                      label="CPF"
+                      margin="normal"
+                      variant="filled"
+                      name="cpf"
+                      required
+                      fullWidth
+                      helperText="Insira o CPF."
+                    />}
+                  </InputMask>
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    id="email"
+                    label="E-mail"
+                    name="email"
+                    required
+                    value={email}
+                    onChange={e => onChange(e)}
+                    margin="normal"
+                    variant="filled"
+                    fullWidth
+                    helperText="Insira o e-mail."
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <h3>Endereço</h3>
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    id="cidade"
+                    label="Cidade"
+                    name="cidade"
+                    required
+                    value={cidade}
+                    onChange={e => onChange(e)}
+                    margin="normal"
+                    variant="filled"
+                    fullWidth
+                    helperText="Insira a cidade."
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    id="estado"
+                    label="Estado"
+                    name="estado"
+                    required
+                    value={estado}
+                    onChange={e => onChange(e)}
+                    type="text"
+                    margin="normal"
+                    variant="filled"
+                    fullWidth
+                    helperText="Insira o estado."
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    id="pais"
+                    label="País"
+                    name="pais"
+                    required
+                    value={pais}
+                    onChange={e => onChange(e)}
+                    type="text"
+                    margin="normal"
+                    variant="filled"
+                    fullWidth
+                    helperText="Insira o país."
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <InputMask
+                    mask="aa"
+                    maskChar={null}
+                    value={uf}
+                    onChange={e => onChange(e)}
+                  >
+                    {() => <TextField
+                      id="uf"
+                      label="UF"
+                      name="uf"
+                      required
+                      type="text"
+                      margin="normal"
+                      variant="filled"
+                      fullWidth
+                      helperText="Insira o UF."
+                    />}
+                  </InputMask>
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    id="logradouro"
+                    label="Logradouro"
+                    name="logradouro"
+                    required
+                    value={logradouro}
+                    onChange={e => onChange(e)}
+                    margin="normal"
+                    variant="filled"
+                    fullWidth
+                    helperText="Insira o logradouro."
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    id="bairro"
+                    label="Bairro"
+                    name="bairro"
+                    required
+                    value={bairro}
+                    onChange={e => onChange(e)}
+                    margin="normal"
+                    variant="filled"
+                    fullWidth
+                    helperText="Insira o bairro."
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    id="numero"
+                    label="Número"
+                    name="numero"
+                    required
+                    value={numero}
+                    onChange={e => onChange(e)}
+                    type="text"
+                    margin="normal"
+                    variant="filled"
+                    fullWidth
+                    helperText="Insira o número."
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <TextField
+                    id="complemento"
+                    label="Complemento"
+                    name="complemento"
+                    value={complemento}
+                    onChange={e => onChange(e)}
+                    type="text"
+                    margin="normal"
+                    variant="filled"
+                    fullWidth
+                    helperText="Insira o complemento."
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <InputMask
+                    mask="99999-999"
+                    value={cep}
+                    onChange={e => onChange(e)}
+                  >
+                    {() => <TextField
+                      id="cep"
+                      label="CEP"
+                      required
+                      name="cep"
+                      margin="normal"
+                      variant="filled"
+                      fullWidth
+                      helperText="Insira o CEP do endereço."
+                    />}
+                  </InputMask>
+                </Grid>
+              </Grid>
+              <Grid
+                container
+                direction="row"
+                justify="flex-end"
+                alignItems="center"
+              >
+                <Button
+                  variant="contained"
+                  color="default"
+                  className={classes.buttonVoltar}
+                  href='/'
+                > Voltar
                   </Button>
-            </Grid>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
-  );
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.buttonSalvar}
+                  type='submit'
+                > Salvar
+                  </Button>
+              </Grid>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    );
 };
 
 EditPessoa.propTypes = {

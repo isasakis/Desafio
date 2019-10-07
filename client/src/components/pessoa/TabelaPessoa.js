@@ -22,7 +22,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import { deletePessoa } from '../../actions/pessoa';
 
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
   },
@@ -35,8 +35,22 @@ const useStyles = makeStyles({
   },
   editButton: {
     color: 'blue',
-  }
-});
+  },
+  confirmButton: {
+    backgroundColor: '#ff0000',
+    color: '#ffffff',
+    '&:hover': {
+      backgroundColor: '#820000',
+    },
+  },
+  cancelButton: {
+    backgroundColor: '#0000ff',
+    color: '#ffffff',
+    '&:hover': {
+      backgroundColor: '#000082',
+    }
+  },
+}));
 
 const TabelaPessoa = ({
   pessoas,
@@ -116,10 +130,10 @@ const TabelaPessoa = ({
                         </DialogContentText>
                       </DialogContent>
                       <DialogActions>
-                        <Button variant="contained" onClick={closeDialog} color="primary" autoFocus>
+                        <Button variant="contained" onClick={closeDialog} autoFocus className={classes.cancelButton}>
                           Não, cancelar
                         </Button>
-                        <Button variant="contained" onClick={onClickDelete} color="secondary">
+                        <Button variant="contained" onClick={onClickDelete} className={classes.confirmButton}>
                           Sim, quero excluir
                         </Button>
                       </DialogActions>

@@ -4,7 +4,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import TabelaPessoa from './TabelaPessoa';
 import Grid from '@material-ui/core/Grid';
 import socket from 'socket.io-client';
-import Create from './Create';
+import FloatingActionButton from '../layout/FloatingActionButton';
 
 class Pessoas extends Component {
   constructor(props) {
@@ -57,9 +57,6 @@ class Pessoas extends Component {
       <Fragment>
         <Grid container direction="column" justify="center" alignItems="center" spacing={2}>
           <Grid item xs={12}>
-            <h1>Gerenciamento de pessoas</h1>
-          </Grid>
-          <Grid item xs={12}>
             <h2>Pessoas cadastradas</h2>
             {this.state.loading ? (
               <Fragment>
@@ -77,7 +74,7 @@ class Pessoas extends Component {
               )}
           </Grid>
         </Grid>
-        <Create />
+        <FloatingActionButton />
       </Fragment>
     )
   }
